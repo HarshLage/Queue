@@ -1,0 +1,81 @@
+#include <iostream>
+#include<queue>
+#include<stack>
+using namespace std;
+
+//INTERLEAN QUEUE
+
+void interlean(queue<int>&first){
+  queue<int>second;
+  int size = first.size();
+
+  for(int i=0;i<size/2;i++){
+    int temp = first.front();
+    first.pop();
+    second.push(temp);
+} 
+ for(int i=0;i<size/2;i++){
+  int temp = second.front();
+  second.pop();
+  first.push(temp);
+
+  temp = first.front();
+  first.pop();
+  first.push(temp);
+ }
+
+
+}
+
+void reversk(queue<int>&q , int k){
+  stack<int>st;
+  int n = q.size();
+  if(k==0 || k > n){
+    return;
+  }
+  for(int i=0;i<k;i++){
+    int temp = q.front();
+    q.pop();
+    st.push(temp);
+  }
+  while(!st.empty())
+  {
+    int temp = st.top();
+    st.pop();
+    q.push(temp);
+  }
+  for(int i=0;i<(n-k);i++){
+    int temp = q.front();
+    q.pop();
+    q.push(temp);
+  }
+}
+void reverse(queue<int>&q){
+  if(q.empty()){
+    return;
+  }
+  int element = q.front();
+  q.pop();
+  
+  reverse(q);
+  q.push(element);
+}
+void print(queue<int>&q){
+  while(!q.empty()){
+    cout<<q.front()<<" ";
+    q.pop();
+  }cout<<endl;
+}
+int main() {
+  queue<int>q;
+  q.push(10);
+  q.push(20);
+  q.push(30);
+  q.push(40);
+
+  // reverse(q);
+  //reversk(q,2);
+  interlean(q);
+  print(q);
+  return 0;
+}
