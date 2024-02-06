@@ -1,0 +1,26 @@
+class Solution {
+public:
+    char repeatedCharacter(string s) {
+        std::queue<int> charQueue;
+        std::unordered_map<char, int> frequency;
+
+        for (int i = 0; i < s.length(); ++i) {
+            char currentChar = s[i];
+
+            frequency[currentChar]++;
+            charQueue.push(i);
+
+            while (!charQueue.empty() && frequency[s[charQueue.front()]] < 2) {
+                charQueue.pop();
+            }
+        }
+
+     if(charQueue.empty()){
+         return '-1';
+     }
+     else{
+         int index = charQueue.front();
+         return s[index];
+     }
+    }
+};
