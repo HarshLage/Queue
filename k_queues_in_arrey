@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+using namespace std;
+class N_queues{
+  public : 
+  int * arr ,  * front , * rear,*next;
+  int freespot ,n,k;
+  N_queues(int _n , int _k):n(_n),k(_k),freespot(0){
+    arr = new int[n];
+    front = new int[k];
+    rear = new int[k];
+    next = new int[n];
+
+    for(int i = 0;i<n;i++){
+         next[i] = i+1;
+    }
+    next[n-1] = -1;
+
+    for(int i=0;i<k;i++){
+      front[i] = rear[i] = -1;
+    }
+}
+
+//pushing elements in arrey as queues
+bool push(int X , int qi_th){
+
+  //OVERFLOW  CONDITIONS 
+  if(freespot == -1){
+    cout<<"OVERFLOW"<<endl;
+    return false;
+  }
+  //finding index to store elements in main arrey
+  int index = freespot;
+
+  // now we have to update the freespot 
+
+  freespot = next[index];
+
+  //suppose if we want to insert the first element in the perticular queue so this is the condition we want to apply
+  if(front[qi_th]==-1){
+    front[qi_th] = index;
+  }
+
+  else{
+    //link the previous rear with the curr element 
+    next[rear[qi_th]] = index;
+  }
+
+  //update next
+  next[index] = -1;
+
+  //update rear
+  rear[qi_th] = index;
+  arr[index] = X;
+  return true;
+
+
+
+}
+
+int pop(int qi_th)
+{
+  // check the underflow conditions
+  if(front[qi_th] == -1){
+    return -1;
+  }
+  //find the index to pop
+  int index = front[qi_th];
+
+  //update front
+  front[qi_th] = next[index];
+
+  //manage freespot
+
+  next[index] = freespot;
+  freespot = index;
+
+    // update rear if the queue becomes empty
+  if (front[qi_th] == -1) {
+    rear[qi_th] = -1;
+  }
+
+  return arr[index];
+
+}
+~N_queues(){
+  delete [] arr;
+  delete [] front;
+  delete [] rear;
+  delete [] next;
+}
+};
+int main()
+{
+  N_queues qk(8,3);
+  cout<<qk.push(1,0)<<endl;
+  cout<<qk.push(2,0)<<endl;
+  cout<<qk.push(3,1)<<endl;
+  cout<<qk.push(4,0)<<endl;
+  cout<<qk.pop(1);
+  return 0; 
+}
